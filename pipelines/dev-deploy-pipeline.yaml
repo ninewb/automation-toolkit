@@ -1,0 +1,53 @@
+name: $(BuildDefinitionName)_$(date:yyyyMMdd)$(rev:.r)
+
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: vars/global.yaml
+
+stages :   
+  - stage: terraform_validate
+    jobs:
+      - template: jobs/terraform-validate.yaml
+        parameters:
+          backendServiceArm: ${{ variables.armConnection }}
+          backendAzureRmResourceGroupName: ${{ variables.armResourceGrp }}
+          backendAzureRmStorageAccountName: ${{ variables.armStorageAcnt }}
+          backendAzureRmContainerName: ${{ variables.armContainer }}
+          backendAzureRmKey: ${{ variables.armBackendKey }}
+          workingDirectory: ${{ variables.tfProject }}
+          environment: ${{ variables.environment }}
+
+  - stage: terraform_plan
+    dependsOn: [terraform_validate]
+    condition: succeeded('terraform_validate')
+    jobs:
+      - template: jobs/terraform-plan.yaml
+        parameters:
+          backendServiceArm: ${{ variables.armConnection }}
+          backendAzureRmResourceGroupName: ${{ variables.armResourceGrp }}
+          backendAzureRmStorageAccountName: ${{ variables.armStorageAcnt }}
+          backendAzureRmContainerName: ${{ variables.armContainer }}
+          backendAzureRmKey: ${{ variables.armBackendKey }}
+          workingDirectory: ${{ variables.tfProject }}
+          environment: ${{ variables.environment }}
+
+  - stage: terraform_apply
+    dependsOn: [terraform_plan]
+    condition: succeeded('terraform_plan')
+    jobs:
+      - template: jobs/terraform-apply.yaml
+        parameters:
+          backendServiceArm: ${{ variables.armConnection }}
+          backendAzureRmResourceGroupName: ${{ variables.armResourceGrp }}
+          backendAzureRmStorageAccountName: ${{ variables.armStorageAcnt }}
+          backendAzureRmContainerName: ${{ variables.armContainer }}
+          backendAzureRmKey: ${{ variables.armBackendKey }}
+          workingDirectory: ${{ variables.tfProject }}
+          environment: ${{ variables.environment }}
+

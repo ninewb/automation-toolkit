@@ -1,0 +1,26 @@
+  jobs:
+    - job: terraform_validate
+      continueOnError: false
+      steps:
+      - template: ../steps/terraform-install.yaml
+        parameters:
+          terraformVersion: '${{ variables.tfVersion }}'
+      
+      - task: TerraformCLI@0
+        displayName: 'Terraform Initialization'
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/projects/${{ parameters.workingDirectory }}/'
+          backendType: 'azurerm'
+          backendServiceArm: '${{ parameters.backendServiceArm }}'
+          backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
+          backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
+          backendAzureRmContainerName: '${{ parameters.backendAzureRmContainerName }}'
+          backendAzureRmKey: '${{ parameters.environment }}-${{ parameters.backendAzureRmKey }}' 
+          allowTelemetryCollection: false
+
+      - task: TerraformCLI@0
+        displayName: 'Terraform Validate'
+        inputs:
+          command: 'validate'
+          allowTelemetryCollection: false

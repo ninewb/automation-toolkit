@@ -1,0 +1,24 @@
+name: $(BuildDefinitionName)_$(date:yyyyMMdd)$(rev:.r)
+
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: vars/global.yaml
+
+stages:
+  - stage: terraform_destroy
+    jobs:
+      - template: jobs/terraform-destroy.yaml
+        parameters:
+          backendServiceArm: ${{ variables.armConnection }}
+          backendAzureRmResourceGroupName: ${{ variables.armResourceGrp }}
+          backendAzureRmStorageAccountName: ${{ variables.armStorageAcnt }}
+          backendAzureRmContainerName: ${{ variables.armContainer }}
+          backendAzureRmKey: ${{ variables.armBackendKey }}
+          workingDirectory: ${{ variables.tfProject }}
+          environment: ${{ variables.environment }}

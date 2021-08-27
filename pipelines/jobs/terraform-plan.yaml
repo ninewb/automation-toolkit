@@ -1,0 +1,27 @@
+ jobs:
+    - job: terraform_plan
+      steps:
+      - template: ../steps/terraform-install.yaml
+
+      - task: TerraformCLI@0
+        displayName: 'Terraform Initialization'
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/projects/${{ parameters.workingDirectory }}/'
+          backendType: 'azurerm'
+          backendServiceArm: '${{ parameters.backendServiceArm }}'
+          backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
+          backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
+          backendAzureRmContainerName: '${{ parameters.backendAzureRmContainerName }}'
+          backendAzureRmKey: '${{ parameters.environment }}-${{ parameters.backendAzureRmKey }}' 
+          allowTelemetryCollection: false
+
+      - task: TerraformCLI@0
+        displayName: 'Terraform Plan'
+        inputs:
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/projects/${{ parameters.workingDirectory }}/'
+          environmentServiceName: '${{ parameters.backendServiceArm }}'
+          commandOptions: '-input=false -var-file="../../vars/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"'
+          allowTelemetryCollection: false
+          publishPlanResults: '${{ parameters.environment }}-terraform.tfstate'

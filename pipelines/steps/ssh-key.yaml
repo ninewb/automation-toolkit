@@ -1,0 +1,7 @@
+jobs:
+  - job: SSH
+    displayName: Create SSH Key
+    steps:
+      - task: CmdLine@2
+        inputs:
+          script: 'ssh-keygen -m PEM -t rsa -b 4096 -f ~/.ssh/azure_rsa -N ""'

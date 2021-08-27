@@ -1,0 +1,70 @@
+stages:
+- stage: validate
+  #pool: 'Azure Pipelines'
+  jobs:
+  - job: validate
+    continueOnError: false
+    steps:
+
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: 'Install'
+      inputs:
+        terraformVersion: '1.0.2'
+    - task: TerraformTaskV2@2
+      displayName: 'Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: 'tf/example'
+        backendServiceArm: 'catalyst-devops'
+        backendAzureRmResourceGroupName: 'catalyst-devops-rg'
+        backendAzureRmStorageAccountName: 'catalystdevopsacc'
+        backendAzureRmContainerName: 'catacontainer'
+        backendAzureRmKey: 'terraform.tfstate'
+    - task: TerraformTaskV2@2
+      displayName: 'Validate'
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: 'tf/example'
+- stage: deploy
+  #pool: 'Azure Pipelines'
+  jobs:
+  - deployment: deploy_terraform
+    continueOnError: false
+    environment: 'dev'
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+            - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+              displayName: 'Install'
+              inputs:
+                terraformVersion: '1.0.2'
+            - task: TerraformTaskV2@2
+              displayName: 'Init'
+              inputs:
+                provider: 'azurerm'
+                command: 'init'
+                workingDirectory: 'tf/example'
+                backendServiceArm: 'catalyst-devops'
+                backendAzureRmResourceGroupName: 'catalyst-devops-rg'
+                backendAzureRmStorageAccountName: 'catalystdevopsacc'
+                backendAzureRmContainerName: 'catacontainer'
+                backendAzureRmKey: 'terraform.tfstate'
+            - task: TerraformTaskV2@2
+              displayName: 'Plan'
+              inputs:
+                provider: 'azurerm'
+                command: 'plan'
+                workingDirectory: 'tf/example'
+                environmentServiceNameAzureRM: 'catalyst-devops'
+            - task: TerraformTaskV2@2
+              displayName: 'Apply'
+              inputs:
+                provider: 'azurerm'
+                command: 'apply'
+                workingDirectory: 'tf/example'
+                environmentServiceNameAzureRM: 'catalyst-devops'
+
