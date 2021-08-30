@@ -1,4 +1,4 @@
-prefix   = "bofa" # prefix that you assign for the resources to be created
+prefix   = "sample" # prefix that you assign for the resources to be created
 location = "eastus" # e.g. "eastus2"
 vm_admin = "sasadmin"
 #ssh_public_key = "~/.ssh/azure_rsa.pub" # Name of file with public ssh key for connecting to the VMs
