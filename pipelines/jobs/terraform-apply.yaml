@@ -31,7 +31,7 @@
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/projects/${{ parameters.workingDirectory }}/'
           environmentServiceName: '${{ parameters.backendServiceArm }}'
-          commandOptions: '-input=false -var-file="../../vars/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"'
+          commandOptions: '-input=false -var-file="$(System.DefaultWorkingDirectory)/vars/${{ parameters.environment }}/env-vars.tfvars"'
           allowTelemetryCollection: false
           publishPlanResults: '${{ parameters.environment }}-terraform.tfstate'
 
@@ -41,5 +41,5 @@
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/projects/${{ parameters.workingDirectory }}/'
           environmentServiceName: '${{ parameters.backendServiceArm }}'
-          commandOptions: '-input=false -auto-approve -var-file="../../vars/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"'
+          commandOptions: '-input=false -auto-approve -var-file="$(System.DefaultWorkingDirectory)/vars/${{ parameters.environment }}/env-vars.tfvars"'
           allowTelemetryCollection: false
