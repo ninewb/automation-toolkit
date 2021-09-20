@@ -8,7 +8,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - template: vars/global.yaml
+  - template: /vars/global.yaml
 
 stages:
   - stage: terraform_destroy
