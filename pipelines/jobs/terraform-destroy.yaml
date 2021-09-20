@@ -23,7 +23,7 @@
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/projects/${{ parameters.workingDirectory }}/'
           environmentServiceName: '${{ parameters.backendServiceArm }}'
-          commandOptions: '-input=false -var-file="$(System.DefaultWorkingDirectory)/vars/${{ parameters.environment }}/env-vars.tfvars"'
+          commandOptions: '-input=false -var-file="$(System.DefaultWorkingDirectory)/vars/${{ parameters.environment }}/env-terra.tfvars"'
           allowTelemetryCollection: false
           publishPlanResults: '${{ parameters.environment }}-terraform.tfstate'
 
@@ -33,5 +33,5 @@
           command: 'destroy'
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/projects/${{ parameters.workingDirectory }}/'
           environmentServiceName: '${{ parameters.backendServiceArm }}'
-          commandOptions: '-input=false -var-file="$(System.DefaultWorkingDirectory)/vars/${{ parameters.environment }}/env-vars.tfvars"'
+          commandOptions: '-input=false -var-file="$(System.DefaultWorkingDirectory)/vars/${{ parameters.environment }}/env-terra.tfvars"'
           allowTelemetryCollection: false
