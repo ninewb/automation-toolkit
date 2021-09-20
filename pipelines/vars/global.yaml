@@ -1,10 +1,10 @@
 variables:
 
   # ARM
-  armConnection: devops
-  armResourceGrp: devops-rg
-  armContainer: container
-  armStorageAcnt: devopsacc
+  armConnection: devops-svc
+  armResourceGrp: devops-svc-rg
+  armContainer: svccontainer
+  armStorageAcnt: devopssvcacc
   armBackendKey: terraform.tfstate
 
   # Environment to pull variables (e.g. vars/$(environment)/env-vars.yaml)
