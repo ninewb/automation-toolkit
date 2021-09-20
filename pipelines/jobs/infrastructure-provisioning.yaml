@@ -9,7 +9,7 @@ jobs:
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
       displayName: 'Install'
       inputs:
-        terraformVersion: '1.0.2'
+        terraformVersion: $(tfVersion)
     - task: TerraformTaskV2@2
       displayName: 'Init'
       inputs:

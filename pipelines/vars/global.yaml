@@ -6,7 +6,13 @@ variables:
   armContainer: container
   armStorageAcnt: devopsacc
   armBackendKey: terraform.tfstate
-  
-  tfProject: Infra-wrapper
+
+  # Environment to pull variables (e.g. vars/$(environment)/env-vars.yaml)
+  environment: stage  
+
+  # Terraform Project being pulled into the pipeline
+  tfProject: viya3
+
+  # Version of Terraform being used in the deployment
   tfVersion: 1.0.3
 

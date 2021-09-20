@@ -10,7 +10,6 @@ pool:
 
 variables:
   - template: vars/global.yaml
-#  - template: vars/dev.yaml
 
 stages:
 
