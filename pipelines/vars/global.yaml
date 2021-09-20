@@ -1,12 +1,12 @@
 variables:
 
   # ARM
-  armConnection: bofadevops
-  armResourceGrp: bofa-devops-rg
-  armContainer: bofacontainer
-  armStorageAcnt: bofadevopsacc
+  armConnection: devops
+  armResourceGrp: devops-rg
+  armContainer: container
+  armStorageAcnt: devopsacc
   armBackendKey: terraform.tfstate
-  environment: dev
-  tfProject: viya3
+  
+  tfProject: Infra-wrapper
   tfVersion: 1.0.3
 
