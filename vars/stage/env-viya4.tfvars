@@ -15,7 +15,7 @@ ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCzO+ELn4Y4lnfSH+mTjG+LXY
 #          to your cluster will be blocked by default.
 
 # **************  RECOMMENDED  VARIABLES  ***************
-default_public_access_cidrs = [] # e.g., ["123.45.6.89/32"]
+#default_public_access_cidrs = [] # e.g., ["123.45.6.89/32"]
 default_public_access_cidrs = ["10.3.0.0/16"]
 
 # **************  RECOMMENDED  VARIABLES  ***************
