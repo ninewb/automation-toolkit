@@ -1,0 +1,18 @@
+variables:
+
+  # ARM
+  armConnection: devops-svc
+  armResourceGrp: devops-svc-rg
+  armContainer: svccontainer
+  armStorageAcnt: devopssvcacc
+  armBackendKey: terraform.tfstate
+
+  # Environment to pull variables (e.g. vars/$(environment)/env-${{ tfProject }}.yaml)
+  environment: stage  
+
+  # Terraform Project being pulled into the pipeline
+  tfProject: viya4
+
+  # Version of Terraform being used in the deployment
+  tfVersion: 1.0.3
+
