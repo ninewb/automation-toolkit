@@ -2,14 +2,14 @@ Working on automation.
 
 # Pipeline Structure
 
-# pipelines
+## pipelines
 
 Pipeline execution YAML developed for a specific platform and use-case. 
 
-- terraform
+## terraform
 
 A makeup of projects and modules that get executed with the pipeline execution
 
-- vars
+## vars
 
 Pre-defined variables for build execution.
