@@ -1,0 +1,48 @@
+---
+
+- name: CREATE WORKING DIRECTORY {{ ASSET_DIR }}
+  file: state=directory path={{ ASSET_DIR }}
+
+- name: VALIDATE SAS DATA FILE EXISTS
+  stat:
+    path: "{{ SAS_DATA_LOC_EXT }}"
+  register: SAS_DATA_FILE_VAL
+
+- name: REPORT IF SAS DATA FILE MISSING
+  fail:
+    msg: "The SAS data file cannot be found:  The Software Order Email (SOE) instructed you to save the SAS_Viya_deployment_data.zip file attachment. If you have not already saved the file, save it to {{ ASSET_DIR }}."
+  when: not SAS_DATA_FILE_VAL.stat.exists
+
+- name: DOWNLOAD AND EXTRACT MIRROR MANAGER
+  unarchive:
+    src: "{{ SAS_MIRROR_MGR }}"
+    dest: "{{ ASSET_DIR }}"
+    owner: "{{ ASSET_OWNER }}"
+    group: "{{ ASSET_GROUP  }}"
+    mode: "0775"
+    remote_src: yes
+
+- name: CREATE MIRROR
+  shell:
+    cmd: ./mirrormgr mirror --deployment-data {{ SAS_DATA_FILE }} --latest
+    chdir: "{{ ASSET_DIR }}"
+
+- name: DOWNLOAD AND EXTRACT SAS ORCHESTRATION
+  unarchive:
+    src: "{{ SAS_ORCH }}"
+    dest: "{{ ASSET_DIR }}"
+    remote_src: yes
+
+- name: CREATE SAS VIYA PLAYBOOK
+  shell: 
+    cmd: ./sas-orchestration build --input {{ SAS_DATA_FILE }}
+    chdir: "{{ ASSET_DIR }}"
+
+- name: EXTRACT PLAYBOOK
+  unarchive:
+    src: "{{ SAS_VIYA_PLAYBOOK_DL }}"
+    dest: "{{ ASSET_DIR }}"
+    owner: "{{ ASSET_OWNER }}"
+    group: "{{ ASSET_GROUP  }}"
+    mode: "0775"
+

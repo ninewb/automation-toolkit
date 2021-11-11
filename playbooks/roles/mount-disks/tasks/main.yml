@@ -1,0 +1,78 @@
+---
+- name: Mount Disks
+  hosts: sas_all
+  become: yes
+  
+  tasks:
+    - name: GET VOLUME NAME
+      shell: echo "/dev/$(ls -l /dev/disk/azure/scsi1 |grep {{ item }}|egrep -o "([^\/]+$)")"
+      register: volume
+      with_items: "{{ lun }}"
+
+    - name: SET FACT - Volume Results
+      set_fact:
+        device: "{{ device + [item.stdout]}}"
+      loop: "{{ volume.results }}"
+
+    - parted:
+        device: "{{ item }}"
+        number: 1
+        state: present    
+      loop: "{{ device }}"
+
+    - name: GET PARTITION
+      shell: echo "/dev/$(ls -l /dev/disk/azure/scsi1 |grep {{ item }}|grep part|egrep -o "([^\/]+$)")"
+      register: partition
+      with_items: "{{ lun }}"
+
+    - name: SET FACT - Partition Results
+      set_fact:
+        part: "{{ part + [item.stdout]}}"
+      loop: "{{ partition.results }}"
+
+    - filesystem:
+        fstype: xfs
+        dev: "{{ item }}"
+      loop: "{{ part }}"
+
+    - command: blkid -s UUID -o value "{{ item }}"
+      register: disk
+      with_items: "{{ part }}"
+
+    - name: SET FACT - Disk Wrapper
+      set_fact:
+        disks: "{{ disks + [item.stdout]}}"
+      loop: "{{ disk.results | list }}"
+
+    - debug:
+       var: disks
+       verbosity: 2
+
+    - debug:
+        var: lun
+        verbosity: 2
+
+    - debug:
+        var: mountpoint
+        verbosity: 2
+
+    - lineinfile:
+        path: /etc/fstab
+        state: present
+        line: "UUID={{ item.0 }}    {{ item.1 }}    xfs defaults,noatime,nofail 0 0"
+      with_together:
+        - "{{ disks }}"
+        - "{{ mountpoint }}"
+
+    - name: MOUNT POINTS - Ensure paths are available
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items: "{{ mountpoint }}"
+
+    - name: MOUNT DISKS - Mount new entries in fstab
+      command: mount -a
+
+    - name: Fix Mirror mount permissions
+      file: dest=/mirror owner=sasadmin group=root mode=0775 recurse=yes
+

@@ -1,0 +1,32 @@
+
+# Variables specific to the mount-disks.yml
+
+device: []
+part: []
+disks: []
+lun:
+  - "lun10"
+  - "lun20"
+  - "lun30"
+  - "lun40"
+
+mountpoint:
+  - "/opt"
+  - "/var/cache"
+  - "/cache"
+  - "/mirror"
+
+# Variables specific to gather-assets.yml
+
+ASSET_OWNER: meraxes
+ASSET_GROUP: root
+
+ASSET_DIR: /sso/assets 
+
+SAS_ORDER: 9CMJSM
+SAS_DATA_FILE: SAS_Viya_deployment_data.zip
+SAS_DATA_LOC_EXT: "{{ ASSET_DIR }}/{{ SAS_DATA_FILE }}"
+SAS_MIRROR_MGR: https://support.sas.com/installation/viya/35/sas-mirror-manager/lax/mirrormgr-linux.tgz
+SAS_ORCH: https://support.sas.com/installation/viya/35/sas-orchestration-cli/lax/sas-orchestration-linux.tgz
+SAS_VIYA_PLAYBOOK_DL: "{{ asset_dir }}/SAS_Viya_playbook.tgz"
+SAS_VIYA_PLAYBOOK: "{{ asset_dir }}/sas_viya_playbook"

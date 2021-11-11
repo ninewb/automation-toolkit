@@ -1,0 +1,48 @@
+---
+- hosts: sas_all
+  become: yes
+  become_user: root
+  tasks:
+      
+    - sysctl:  
+        name: vm.max_map_count
+        value: "262144"
+        state: present
+        reload: yes 
+    
+    - sysctl: 
+        name: vm.overcommit_memory
+        value: "0"
+        state: present
+        reload: yes
+
+    - sysctl:
+        name: net.ipv4.conf.eth0.route_localnet
+        value: "1"
+        state: present
+        reload: yes
+
+    - name: Upgrade all packages
+      dnf:
+        name: "*"
+        state: latest
+
+    - name: Install compat-openssl10
+      dnf:
+        name: compat-openssl10
+        state: latest
+
+    - name: Install ncurses-compat-libs
+      dnf:
+        name: ncurses-compat-libs
+        state: latest
+
+    - name: Install Python3.8
+      dnf:
+        name: python3.8
+        state: latest
+
+    - name: Change SELinux to permissive
+      selinux:
+        policy: targeted
+        state: permissive

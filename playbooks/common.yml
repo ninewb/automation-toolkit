@@ -1,0 +1,12 @@
+---
+# file: site.yml
+- hosts: hosts_all
+  become: yes
+  become_user: root
+  any_errors_fatal: true
+  tasks:
+  - set_fact:
+      orchestration_root: '{{ playbook_dir }}'
+
+  - include: roles/download-assets/tasks/main.yml
+

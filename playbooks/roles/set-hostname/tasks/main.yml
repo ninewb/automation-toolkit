@@ -1,0 +1,8 @@
+---
+- hosts: sas_all
+  tasks:
+    - name: RUN SCRIPT TO UPDATE VM HOSTNAME
+      script: ../../../scripts/set-host.sh
+      become: yes
+      become_user: root
+      
