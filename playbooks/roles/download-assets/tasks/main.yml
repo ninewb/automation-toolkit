@@ -2,6 +2,7 @@
 
 - name: CREATE WORKING DIRECTORY {{ ASSET_DIR }}
   file: state=directory path={{ ASSET_DIR }}
+  tags: download_only
 
 - name: VALIDATE SAS DATA FILE EXISTS
   stat:
@@ -21,6 +22,7 @@
     group: "{{ ASSET_GROUP  }}"
     mode: "0775"
     remote_src: yes
+  tags: download_only
 
 - name: CREATE MIRROR
   shell:
@@ -32,6 +34,7 @@
     src: "{{ SAS_ORCH }}"
     dest: "{{ ASSET_DIR }}"
     remote_src: yes
+  tags: download_only
 
 - name: CREATE SAS VIYA PLAYBOOK
   shell: 
