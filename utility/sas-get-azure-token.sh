@@ -1,4 +1,4 @@
-export REGHOST=sas-aml.azure.sas.com
+export REGHOST=$(hostname -f)
 export REGCERT=/opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts/trustedcerts.pem
 export REGUSER=ninewb:CandC2020!
 

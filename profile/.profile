@@ -20,10 +20,16 @@ export TMOUT=9999999999
 ################################################################################
 
 export MAINDIR=/workspace
+
+export LOGDIR=${MAINDIR}/logs
+export LOGDATE=$(date +%Y-%m-%d)
+
 export NOTESDIR=${MAINDIR}/notes
 export HISTORY=${NOTESDIR}/history
+
 export SCRATCH=scratch.md
 export MODDATE=$(date -r ${NOTESDIR}/${SCRATCH} +%F)
+
 
 ################################################################################
 # aliases
@@ -40,6 +46,13 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 alias notes='cd ${NOTESDIR}'
 alias scratch='mv ${NOTESDIR}/${SCRATCH} ${HISTORY}/${SCRATCH}-${MODDATE}; vi ${NOTESDIR}/${SCRATCH}' 
+
+################################################################################
+# GIT specific
+################################################################################
+
+export GITLOG=git_${LOGDATE}.log
+
 
 ################################################################################
 # SAS specific
