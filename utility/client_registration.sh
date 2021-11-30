@@ -1,7 +1,7 @@
 source /opt/sas/viya/config/consul.conf
 export CONSUL_TOKEN=$(sudo cat /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens/consul/default/client.token)
 
-export REGHOST=sas-aml.azure.sas.com
+export REGHOST=$(hostname -f)
 export REGCERT=/opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts/trustedcerts.pem
 
 export REGUSER=azure

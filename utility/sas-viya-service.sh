@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export ARKLOC=/workspace/deployment_files/9CMJSM/sas_viya_playbook
+export ARKLOC=/workspace/deployment_files/sas_viya_playbook
 
 # Delay about 2 minutes and then start our startup routine.
 function execStart {
