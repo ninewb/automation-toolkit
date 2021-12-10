@@ -1,6 +1,6 @@
 export REGHOST=$(hostname -f)
 export REGCERT=/opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts/trustedcerts.pem
-export REGUSER=ninewb:CandC2020!
+export REGUSER=azure:secret
 
 curl https://${REGHOST}/SASLogon/oauth/token \
 	  --cacert ${REGCERT} \

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-export ARKLOC=/workspace/deployment_files/sas_viya_playbook
+. ../profile/.profile
+export ARKLOC=/sso/deployment_files/sas_viya_playbook
 
 # Delay about 2 minutes and then start our startup routine.
 function execStart {
@@ -12,7 +13,8 @@ function execStart {
 
 function execStop {
  cd ${ARKLOC}
- ansible-playbook viya-ark/playbooks/viya-mmsu/viya-services-stop.yml -e "enable_stray_cleanup=true"
+ ansible-playbook viya-ark/playbooks/viya-mmsu/viya-services-stop.yml -e "enable_stray_cleanup=true" 
+ #> ${LOGDIR}/execStop_${LOGDATE}.log
 }
 
 case $1 in

@@ -14,12 +14,17 @@ fi
 
 set -o emacs
 export TMOUT=9999999999
+export TERM=xterm
+export CRON_TZ="America/New_York"
 
 ################################################################################
 # variables
 ################################################################################
 
 export MAINDIR=/workspace
+#export BASEDIR=$(pwd)
+#export AUTOROOT=$(dirname ${BASEDIR})
+export AUTOROOT=${MAINDIR}/sas-automation
 
 export LOGDIR=${MAINDIR}/logs
 export LOGDATE=$(date +%Y-%m-%d)
