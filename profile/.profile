@@ -52,6 +52,9 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias notes='cd ${NOTESDIR}'
 alias scratch='mv ${NOTESDIR}/${SCRATCH} ${HISTORY}/${SCRATCH}-${MODDATE}; vi ${NOTESDIR}/${SCRATCH}' 
 
+alias viup='vistart'
+alias vidown='vistop'
+
 ################################################################################
 # GIT specific
 ################################################################################
@@ -76,3 +79,18 @@ if [ -d /opt/sas/viya ]; then
     export PATH=$PATH:$SPREHOME/bin:$SASVIYAHOME/bin:$SASVIYAUTIL/bin
 fi
 
+################################################################################
+# Functions
+################################################################################
+
+function vistart {
+  cd ${AUTOROOT}/utility/
+  ./az-vm-state.sh --start --subscription sas-ninewb --resource-group sasviya3
+  ./sas-viya-service.sh -start > ${LOGDIR}/vistart_${LOGDATE}.log  
+}
+
+function vistop {
+  cd ${AUTOROOT}/utility/
+  ./sas-viya-service.sh -stop > ${LOGDIR}/vistop_${LOGDATE}.log
+  ./az-vm-state.sh --stop --subscription sas-ninewb --resource-group sasviya3
+}
