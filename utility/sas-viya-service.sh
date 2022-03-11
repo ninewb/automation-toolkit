@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. ../profile/.profile
+source ../profile/.profile
 export ARKLOC=/sso/deployment_files/sas_viya_playbook
 
 # Delay about 2 minutes and then start our startup routine.
