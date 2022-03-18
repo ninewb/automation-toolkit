@@ -32,4 +32,9 @@ dbca -silent -createDatabase -templateName General_Purpose.dbc \
 -numberOfPDBs 1 -pdbName pdb1 -pdbAdminPassword ${ORCLPW} -databaseType MULTIPURPOSE \
 -automaticMemoryManagement false -storageType FS -ignorePreReqs
 
+dbca -silent -createDatabase -templateName General_Purpose.dbc \
+-gdbname orcl -sid orcl -responseFile NO_VALUE -characterSet AL32UTF8 \
+-sysPassword ${ORCLPW} -systemPassword ${ORCLPW} -createAsContainerDatabase false \
+-databaseType MULTIPURPOSE -storageType FS -ignorePreReqs -sampleSchema true
+
 lsnrctl start
