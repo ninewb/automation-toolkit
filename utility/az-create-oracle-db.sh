@@ -17,7 +17,7 @@ fi
 
 # Instantiate environment.
 
-echo "export ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
+echo "export ORACLE_HOME=/u01/app/oracle/product/19.0.0/dbhome_1
 export PATH=$PATH:$HOME/bin:$ORACLE_HOME/bin
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH
 export ORACLE_SID=orcl" >> ~/.bash_profile
