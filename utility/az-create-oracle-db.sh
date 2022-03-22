@@ -2,6 +2,7 @@
 
 # Define your desired password.
 export ORCLPW=
+export RSPPATH=/path/to/response
 
 # Check to make sure we are "oracle".
 
@@ -24,17 +25,8 @@ export ORACLE_SID=orcl" >> ~/.bash_profile
 
 source ~/.bash_profile
 
-# Create container and pluggable database.
+# Create Database
 
-dbca -silent -createDatabase -templateName General_Purpose.dbc \
--gdbname orcl -sid orcl -responseFile NO_VALUE -characterSet AL32UTF8 \
--sysPassword ${ORCLPW} -systemPassword ${ORCLPW} -createAsContainerDatabase true \
--numberOfPDBs 1 -pdbName pdb1 -pdbAdminPassword ${ORCLPW} -databaseType MULTIPURPOSE \
--automaticMemoryManagement false -storageType FS -ignorePreReqs
-
-dbca -silent -createDatabase -templateName General_Purpose.dbc \
--gdbname orcl -sid orcl -responseFile NO_VALUE -characterSet AL32UTF8 \
--sysPassword ${ORCLPW} -systemPassword ${ORCLPW} -createAsContainerDatabase false \
--databaseType MULTIPURPOSE -storageType FS -ignorePreReqs -sampleSchema true
+dbca -silent -createDatabase -responseFile ${RSPPATH}/db_create.rsp
 
 lsnrctl start
