@@ -30,3 +30,15 @@ source ~/.bash_profile
 dbca -silent -createDatabase -responseFile ${RSPPATH}/db_create.rsp
 
 lsnrctl start
+
+#### Create Pluggable Databases
+
+# sqlplus / as sysdba
+# show con_name;
+# show pdbs;
+#
+# Example: 
+# CREATE PLUGGABLE DATABASE [DATABASE_NAME] ADMIN USER [ADMIN_USER] IDENTIFIED BY [ADMIN_PW] FILE_NAME_CONVERT = ('/u02/oradata/AMLORCL/pdbseed/', '/u02/oradata/AMLORCL/main/');
+# alter pluggable database [DATABASE_NAME] OPEN;
+# alter session set container = [DATABASE_NAME];
+# show con_name;
