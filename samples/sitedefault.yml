@@ -1,0 +1,135 @@
+config:
+  cacheserver:
+      jvm:
+        java_option_xms: '-Xms8G'
+        java_option_xmx: '-Xmx8G'
+  svi-datahub:
+        spring.datasource.tomcat.maxActive: 200
+        jvm:
+            java_option_xmx: ‘-Xmx12G’
+  svi-indexer:
+        jvm:
+            java_option_xmx: ‘-Xmx12G’
+  files:
+        spring.datasource.tomcat.maxActive: 200
+        sas.files:
+            maxFileSizeMB: 2000
+        jvm:
+            java_option_xmx: ‘-Xmx12G’ 
+  sas.audit.archive:
+      storage.local.destination: /sso/data/audit
+      storageType: local
+  application:
+      locale.default: en-US
+      sas.multi.tenancy.enabled: true
+      sas.multi.tenancy.db.mode: databasePerTenant
+      spring:
+          datasource.initialSize: ${spring.datasource.tomcat.initialSize}
+          datasource.maxIdle: ${spring.datasource.tomcat.maxIdle}
+          datasource.maxActive: ${spring.datasource.tomcat.maxActive}
+          datasource.minEvictableTimeMillis: ${spring.datasource.tomcat.minEvictableTimeMillis}
+          datasource.minIdle: ${spring.datasource.tomcat.minIdle}
+          datasource.tomcat.initialSize: 0
+          datasource.tomcat.maxIdle: 0
+          datasource.tomcat.minEvictableTimeMillis: 30000
+          datasource.tomcat.minIdle: 0
+          datasource.tomcat.maxActive: 10
+      zones:
+          internal.hostnames: psfc.unx.sas.com
+      tenants:
+          provider:
+             sas.identities.providers.ldap.connection:
+                 host: ninewb-ops-ldap.unx.sas.com
+                 password:
+                 pool.maxActive: 30
+                 pool.maxIdle: 30
+                 port: 389
+                 url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
+                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+             sas.identities.providers.ldap.group:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: cn
+                 distinguishedName: cn
+                 objectClass: groupOfNames
+                 searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
+                 objectFilter: (objectClass=groupOfNames)
+             sas.identities.providers.ldap.user:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: uid
+                 distinguishedName: cn
+                 searchFilter: uid={0}
+                 objectFilter: (objectClass=inetOrgPerson)
+             sas.identities:
+                 administrator:
+          main:
+             sas.identities.providers.ldap.connection:
+                 host: ninewb-ops-ldap.unx.sas.com
+                 password:
+                 pool.maxActive: 30
+                 pool.maxIdle: 30
+                 port: 389
+                 url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
+                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+             sas.identities.providers.ldap.group:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: cn
+                 distinguishedName: cn
+                 objectClass: groupOfNames
+                 searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
+                 objectFilter: (objectClass=groupOfNames)
+             sas.identities.providers.ldap.user:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: uid
+                 distinguishedName: cn
+                 searchFilter: uid={0}
+                 objectFilter: (objectClass=inetOrgPerson)
+             sas.identities:
+                 administrator:
+          aml:
+             sas.identities.providers.ldap.connection:
+                 host: ninewb-ops-ldap.unx.sas.com
+                 password:
+                 pool.maxActive: 30
+                 pool.maxIdle: 30
+                 port: 389
+                 url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
+                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+             sas.identities.providers.ldap.group:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: cn
+                 distinguishedName: cn
+                 objectClass: groupOfNames
+                 searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
+                 objectFilter: (objectClass=groupOfNames)
+             sas.identities.providers.ldap.user:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: uid
+                 distinguishedName: cn
+                 searchFilter: uid={0}
+                 objectFilter: (objectClass=inetOrgPerson)
+             sas.identities:
+                 administrator:
+          cdd:
+             sas.identities.providers.ldap.connection:
+                 host: ninewb-ops-ldap.unx.sas.com
+                 password:
+                 pool.maxActive: 30
+                 pool.maxIdle: 30
+                 port: 389
+                 url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
+                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+             sas.identities.providers.ldap.group:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: cn
+                 distinguishedName: cn
+                 objectClass: groupOfNames
+                 searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
+                 objectFilter: (objectClass=groupOfNames)
+             sas.identities.providers.ldap.user:
+                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 accountId: uid
+                 distinguishedName: cn
+                 searchFilter: uid={0}
+                 objectFilter: (objectClass=inetOrgPerson)
+             sas.identities:
+                 administrator:
