@@ -39,22 +39,22 @@ config:
       tenants:
           provider:
              sas.identities.providers.ldap.connection:
-                 host: ninewb-ops-ldap.unx.sas.com
+                 host: server.company.com
                  password:
                  pool.maxActive: 30
                  pool.maxIdle: 30
                  port: 389
                  url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
-                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 userDN: cn=admin,dc=server,dc=company,dc=com
              sas.identities.providers.ldap.group:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: cn
                  distinguishedName: cn
                  objectClass: groupOfNames
                  searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
                  objectFilter: (objectClass=groupOfNames)
              sas.identities.providers.ldap.user:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: uid
                  distinguishedName: cn
                  searchFilter: uid={0}
@@ -63,22 +63,22 @@ config:
                  administrator:
           main:
              sas.identities.providers.ldap.connection:
-                 host: ninewb-ops-ldap.unx.sas.com
+                 host: server.company.com
                  password:
                  pool.maxActive: 30
                  pool.maxIdle: 30
                  port: 389
                  url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
-                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 userDN: cn=admin,dc=server,dc=company,dc=com
              sas.identities.providers.ldap.group:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: cn
                  distinguishedName: cn
                  objectClass: groupOfNames
                  searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
                  objectFilter: (objectClass=groupOfNames)
              sas.identities.providers.ldap.user:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: uid
                  distinguishedName: cn
                  searchFilter: uid={0}
@@ -87,22 +87,22 @@ config:
                  administrator:
           aml:
              sas.identities.providers.ldap.connection:
-                 host: ninewb-ops-ldap.unx.sas.com
+                 host: server.company.com
                  password:
                  pool.maxActive: 30
                  pool.maxIdle: 30
                  port: 389
                  url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
-                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 userDN: cn=admin,dc=server,dc=company,dc=com
              sas.identities.providers.ldap.group:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: cn
                  distinguishedName: cn
                  objectClass: groupOfNames
                  searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
                  objectFilter: (objectClass=groupOfNames)
              sas.identities.providers.ldap.user:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: uid
                  distinguishedName: cn
                  searchFilter: uid={0}
@@ -111,22 +111,22 @@ config:
                  administrator:
           cdd:
              sas.identities.providers.ldap.connection:
-                 host: ninewb-ops-ldap.unx.sas.com
+                 host: server.company.com
                  password:
                  pool.maxActive: 30
                  pool.maxIdle: 30
                  port: 389
                  url: ldap://${sas.identities.providers.ldap.connection.host}:${sas.identities.providers.ldap.connection.port}
-                 userDN: cn=admin,dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 userDN: cn=admin,dc=server, dc=company,dc=com
              sas.identities.providers.ldap.group:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: cn
                  distinguishedName: cn
                  objectClass: groupOfNames
                  searchFilter: ${sas.identities.providers.ldap.group.accountId}={0}
                  objectFilter: (objectClass=groupOfNames)
              sas.identities.providers.ldap.user:
-                 baseDN: dc=ninewb-ops-ldap,dc=unx,dc=sas,dc=com
+                 baseDN: dc=server,dc=company,dc=com
                  accountId: uid
                  distinguishedName: cn
                  searchFilter: uid={0}
