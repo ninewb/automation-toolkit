@@ -9,18 +9,12 @@ export PGPASSWORD=$(/opt/sas/viya/home/bin/sas-bootstrap-config kv read config/a
 
 export PGDMPROOT=/tmp
 export PGDATABASE=SharedServices
-#export PGDATABASE=tenant1
-export PGSCHEMA=cddprep
 
 # Viya 3.5
 
 export PGSQLROOT=/opt/sas/viya/home/postgresql11/bin
 export PGSQLEXEC=${PGSQLROOT}/psql
 export PGDUMPEXEC=${PGSQLROOT}/pg_dump
-
-# Viya 3.4
-# export PGSQLEXEC=/opt/sas/viya/home/bin/psql
-# export PGDUMPEXEC=
 
 # Connect to DB
 
