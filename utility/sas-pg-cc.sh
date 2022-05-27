@@ -16,6 +16,8 @@ export PGSQLROOT=/opt/sas/viya/home/postgresql11/bin
 export PGSQLEXEC=${PGSQLROOT}/psql
 export PGDUMPEXEC=${PGSQLROOT}/pg_dump
 
+export LD_LIBRARY_PATH=/opt/sas/viya/home/postgresql11/lib64:$LD_LIBRARY_PATH
+
 # Connect to DB
 
 ${PGSQLEXEC} -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} ${PGDATABASE} -c \
