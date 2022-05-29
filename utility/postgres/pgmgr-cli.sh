@@ -138,16 +138,6 @@ else
 fi
 }
 
-function f_remschema 
-{
-  SNAPFILE=ContengencyBackup_${DT}.dump
-  pg_dump -U dbmsowner -Fc -x --clean --if-exists ${PGDATABASE} > ${BTMPLOC}/${SNAPFILE}
-  echo "  INFO: A contengency backup was performed: ${BTMPLOC}/${SNAPFILE}"
-  SNAPFILE=remschema_${DT}.log
-  psql -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} ${PGDATABASE} < ${ROOTLOC}/remschema.sql 2> ${LOGLOC}/${SNAPFILE}
-  echo "  INFO: Necessary schemas have been dropped from the database."
-}
-
 function f_dumpdb 
 {
   f_valroot;
@@ -184,15 +174,6 @@ function f_restoredb
 
   SNAPFILE=PostgresRestore_${DT}.log
   pg_restore -v -Fc -d ${PGDATABASE} ${BACKUPLOC}/${RESTOREFILE} -c --if-exists -U dbmsowner 2> ${LOGLOC}/${SNAPFILE}
-}
-
-function f_astart 
-{
-    ansible all -m shell -a 'sudo systemctl start sas-viya-consul-default'
-    ansible all -m shell -a 'sudo systemctl start sas-viya-vault-default'
-    ansible all -m shell -a 'sudo systemctl start sas-viya-rabbitmq-server-default'
-    ansible all -m shell -a 'sudo systemctl start sas-viya-sasdatasvrc-postgres-node0'
-    ansible all -m shell -a 'sudo systemctl start  sas-viya-sasdatasvrc-postgres-pgpool0'
 }
 
 main "$@"
