@@ -23,7 +23,8 @@ Options:
   -b, --database         Database your taking action on (required always)
   -d, --dump             Uses pg_dump to snapshot the database
   -r, --restore          Uses pg_restore on designated database
-  -s, --restore-file     Dump file to restore to (required with -r)
+  -s, --restore-file     Dump file to restore to (required with restore)
+  -n, --restore-host     The hostname you are restoring from (required with restore)
   -l, --list-backup      Show the last 10 backups
   -h, --help             This small usage guide
 
@@ -86,7 +87,7 @@ export LD_LIBRARY_PATH=${PGROOT}/lib64:$LD_LIBRARY_PATH
 function main()
 {
   local -xgr program="$(readlink -f "${BASH_SOURCE[0]}")"
-  local -r OPTIONS=$(getopt -o b:s:drlh -l "database:,restore-file:,dump,restore,list-backup,help" -n "${FUNCNAME[0]}" -- "$@") || return
+  local -r OPTIONS=$(getopt -o b:s:n:drlh -l "database:,restore-file:,restore-host,dump,restore,list-backup,help" -n "${FUNCNAME[0]}" -- "$@") || return
   eval set -- "$OPTIONS"
 
   PGDATABASE=
@@ -98,6 +99,7 @@ function main()
     case "$1" in
       -b|--database)          PGDATABASE="$2"; shift 2;;
       -s|--restore-file)      RESTOREFILE="$2"; shift 2;;
+      -n|--restore-host)      RESTOREHOST="$2"; shift 2;;
       -d|--dump)              STATE=f_dumpdb; shift;;
       -r|--restore)           RS=1;STATE=f_restoredb; shift;;
       -l|--list-backup)       LS=1;STATE=f_listbu; shift;;
@@ -115,6 +117,7 @@ function main()
     if [ "${RS}" == 1 ]
     then
       [[ -n ${RESTOREFILE} ]] || { echo "  ABORTED: WHen performing a restore, a restore file must be specified."; return 1; }
+      [[ -n ${RESTOREHOST} ]] || { echo "  ABORTED: WHen performing a restore, a restore host must be specified."; return 1; }
     fi
   fi
 
@@ -212,8 +215,9 @@ function f_restoredb
   pg_restore -v -Fc -d ${PGDATABASE} ${BACKUPLOC}/${RESTOREFILE} -c --if-exists -U dbmsowner 2> ${LOGLOC}/${SNAPFILE}
   echo "The restore has completed, review the restore log for any errors."
   sleep 5
-  echo "Updating environment specific values..."
-  echo "select * from fdhmetadata.dh_data_store where host_nm = '${PGHOST}';" > ${ROOTLOC}/updatehost.sql
+  echo "Updating environment specific values.  Restoring from ${RESTOREHOST} to ${PGHOST}."
+  echo "NOTE: In Visual Investitgator 10.8, the hostname value is set to \${postgres.host}."
+  echo "update fdhmetadata.dh_data_store set host_nm = '${PGHOST}' where host_nm = '${RESTOREHOST}';" > ${ROOTLOC}/updatehost.sql
   echo "delete from fdhmetadata.dh_data_store where host_nm is null;" >> ${ROOTLOC}/updatehost.sql
   psql -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} ${PGDATABASE} < ${ROOTLOC}/updatehost.sql >> ${LOGLOC}/${SNAPFILE} 2>&1
   echo "Database has been updated, services can be started."
