@@ -93,13 +93,14 @@ function main()
   RESTOREFILE=
   STATE=
   RS=
+  LS=
   while true ; do
     case "$1" in
       -b|--database)          PGDATABASE="$2"; shift 2;;
       -s|--restore-file)      RESTOREFILE="$2"; shift 2;;
       -d|--dump)              STATE=f_dumpdb; shift;;
       -r|--restore)           RS=1;STATE=f_restoredb; shift;;
-      -l|--list-backup)       STATE=f_listbu; shift;;
+      -l|--list-backup)       LS=1;STATE=f_listbu; shift;;
       -h|--help)              main__HELP; shift;;
       --)                     shift; break;;
       *)                      shift; break;;
@@ -107,11 +108,29 @@ function main()
   done
 
   # Verify Flags
-  [[ -n ${PGDATABASE} ]] || { echo "  ABORTED: Database must be specified. "; main__SPEC; return 1; }
-  [[ -n ${STATE} ]] || { echo "  ABORTED: Must perform a database dump or restore."; return 1; }
-  if [ "${RS}" == 1 ]
+  if [[ "${LS}" != 1 ]]
   then
-    [[ -n ${RESTOREFILE} ]] || { echo "  ABORTED: WHen performing a restore, a restore file must be specified."; return 1; }
+    [[ -n ${PGDATABASE} ]] || { echo "  ABORTED: Database must be specified. "; main__SPEC; return 1; }
+    [[ -n ${STATE} ]] || { echo "  ABORTED: Must perform a database dump or restore."; return 1; }
+    if [ "${RS}" == 1 ]
+    then
+      [[ -n ${RESTOREFILE} ]] || { echo "  ABORTED: WHen performing a restore, a restore file must be specified."; return 1; }
+    fi
+  fi
+
+  if [[ ! -d "${LOGLOC}" ]]
+  then
+    mkdir -p ${ROOTLOC}/log
+  fi
+
+  if [[ ! -d "${BACKUPLOC}" ]]
+  then
+    mkdir -p ${ROOTLOC}/backup
+  fi
+
+  if [[ ! -d "${BTMPLOC}" ]]
+  then
+    mkdir -p ${ROOTLOC}/btmp
   fi
 
 ${STATE}
@@ -129,7 +148,7 @@ fi
 function f_list
 {
   echo "
-  These are a listign of the last 10 backups in ${BACKUPLOC}
+  These are a listing of the last 10 backups in ${BACKUPLOC}
   "
   ls -ltr ${BACKUPLOC}
   exit 0
@@ -156,7 +175,9 @@ function f_dumpdb
   f_consul;
 
   SNAPFILE=PostgresBackup_${DT}.dump
+  echo "The database backup has started..."
   pg_dump -U dbmsowner -Fc -x --clean --if-exists ${PGDATABASE} > ${BACKUPLOC}/${SNAPFILE}
+  echo "The backup has completed, the backup file: ${BACKUPLOC}/${SNAPFILE}."
 }
 
 function f_restoredb 
@@ -165,12 +186,14 @@ function f_restoredb
   f_consul;
 
   SNAPFILE=ContengencyBackup_${DT}.dump
+  echo "  INFO: A contengency backup is being processed on the existing database."
   pg_dump -U dbmsowner -Fc -x --clean --if-exists ${PGDATABASE} > ${BTMPLOC}/${SNAPFILE}
   echo "  INFO: A contengency backup was performed: ${BTMPLOC}/${SNAPFILE}"
 
   SNAPFILE=remschema_${DT}.log
   if [[ -f "${ROOTLOC}/remschema.sql" ]]
   then
+    echo "  INFO: A PSQL function is running to clean up schemas."
     psql -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} ${PGDATABASE} < ${ROOTLOC}/remschema.sql > ${LOGLOC}/${SNAPFILE} 2>&1
     echo "  INFO: Necessary schemas have been dropped from the database."
   else
@@ -185,7 +208,9 @@ function f_restoredb
   fi
 
   SNAPFILE=PostgresRestore_${DT}.log
+  echo "The database restore is processing with backup file: ${BACKUPLOC}/${RESTOREFILE}."
   pg_restore -v -Fc -d ${PGDATABASE} ${BACKUPLOC}/${RESTOREFILE} -c --if-exists -U dbmsowner 2> ${LOGLOC}/${SNAPFILE}
+  echo "The restore has completed, review the restore log for any errors."
 }
 
 main "$@"
