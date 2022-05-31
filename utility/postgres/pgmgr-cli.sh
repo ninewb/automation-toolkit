@@ -52,12 +52,24 @@ export DT=$(date +"%Y-%m-%d-%H-%M-%S")
 
 # Log Location
 export LOGLOC=${ROOTLOC}/log
+if [[ ! -d "${LOGLOC}" ]] 
+then
+  mkdir -p ${ROOTLOC}/log
+fi
 
 # All Postgres Backups
 export BACKUPLOC=${ROOTLOC}/backup
+if [[ ! -d "${BACKUPLOC}" ]]
+then
+  mkdir -p ${ROOTLOC}/backup
+fi
 
 # Temporary Backup Location
 export BTMPLOC=${ROOTLOC}/btmp
+if [[ ! -d "${BTMPLOC}" ]]
+then
+  mkdir -p ${ROOTLOC}/btmp
+fi
 
 #################################################################################################
 ## Set Environment
