@@ -77,7 +77,7 @@ fi
 
 export PGROOT=/opt/sas/viya/home/postgresql11
 export PATH=${PGROOT}/bin:$PATH
-export LD_LIBRARY_PATH=${PGROOT}/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=${PGROOT}/lib64:$LD_LIBRARY_PATH
 
 #################################################################################################
 ## MAIN ROOT
@@ -211,6 +211,12 @@ function f_restoredb
   echo "The database restore is processing with backup file: ${BACKUPLOC}/${RESTOREFILE}."
   pg_restore -v -Fc -d ${PGDATABASE} ${BACKUPLOC}/${RESTOREFILE} -c --if-exists -U dbmsowner 2> ${LOGLOC}/${SNAPFILE}
   echo "The restore has completed, review the restore log for any errors."
+  sleep 5
+  echo "Updating environment specific values..."
+  echo "select * from fdhmetadata.dh_data_store where host_nm = '${PGHOST}';" > ${ROOTLOC}/updatehost.sql
+  echo "delete from fdhmetadata.dh_data_store where host_nm is null;" >> ${ROOTLOC}/updatehost.sql
+  psql -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} ${PGDATABASE} < ${ROOTLOC}/updatehost.sql >> ${LOGLOC}/${SNAPFILE} 2>&1
+  echo "Database has been updated, services can be started."
 }
 
 main "$@"
