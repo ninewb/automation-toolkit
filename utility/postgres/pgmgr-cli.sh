@@ -14,7 +14,7 @@ SAS INSITIUTE INC. - POSTGRESQL MANAGER COMMAND LINE INTERFACE | v1.0.05272022
       - Backup an existing database
           - Creates a custom dump file in the designated backup directory
       - Restore from a previous backup
-          - Creates a 
+          - Creates a contegency backup and then restores the specified backup 
 
 Usage:
   pgmgr-cli [options]
@@ -53,24 +53,12 @@ export DT=$(date +"%Y-%m-%d-%H-%M-%S")
 
 # Log Location
 export LOGLOC=${ROOTLOC}/log
-if [[ ! -d "${LOGLOC}" ]] 
-then
-  mkdir -p ${ROOTLOC}/log
-fi
 
 # All Postgres Backups
 export BACKUPLOC=${ROOTLOC}/backup
-if [[ ! -d "${BACKUPLOC}" ]]
-then
-  mkdir -p ${ROOTLOC}/backup
-fi
 
 # Temporary Backup Location
 export BTMPLOC=${ROOTLOC}/btmp
-if [[ ! -d "${BTMPLOC}" ]]
-then
-  mkdir -p ${ROOTLOC}/btmp
-fi
 
 #################################################################################################
 ## Set Environment
@@ -87,7 +75,7 @@ export LD_LIBRARY_PATH=${PGROOT}/lib64:$LD_LIBRARY_PATH
 function main()
 {
   local -xgr program="$(readlink -f "${BASH_SOURCE[0]}")"
-  local -r OPTIONS=$(getopt -o b:s:n:drlh -l "database:,restore-file:,restore-host,dump,restore,list-backup,help" -n "${FUNCNAME[0]}" -- "$@") || return
+  local -r OPTIONS=$(getopt -o b:s:n:drlh -l "database:,restore-file:,restore-host:,dump,restore,list-backup,help" -n "${FUNCNAME[0]}" -- "$@") || return
   eval set -- "$OPTIONS"
 
   PGDATABASE=
